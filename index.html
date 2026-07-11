@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RJ Mobile — Ultimate Catalog & Compare Pro</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      /* Dark Theme */
+      --bg-base: #09090b; 
+      --card-bg: rgba(24, 24, 27, 0.6);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --primary: #8b5cf6; 
+      --primary-hover: #a78bfa;
+      --primary-alpha: rgba(139, 92, 246, 0.2);
+      --text-main: #f4f4f5;
+      --text-soft: #a1a1aa;
+      --success: #10b981; 
+      --success-alpha: rgba(16, 185, 129, 0.2);
+      --danger: #ef4444;
+      --danger-alpha: rgba(239, 68, 68, 0.2);
+      --input-bg: rgba(9, 9, 11, 0.6);
+      --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --glass-blur: blur(16px);
+      
+      --mesh-color-1: radial-gradient(at 10% 20%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
+      --mesh-color-2: radial-gradient(at 90% 80%, rgba(59, 130, 246, 0.15) 0px, transparent 50%);
+    }
+    
+    body.light-theme {
+      --bg-base: #f8fafc; 
+      --card-bg: rgba(255, 255, 255, 0.7);
+      --card-border: rgba(0, 0, 0, 0.08);
+      --primary: #4f46e5; 
+      --primary-hover: #6366f1;
+      --primary-alpha: rgba(79, 70, 229, 0.15);
+      --text-main: #0f172a;
+      --text-soft: #64748b;
+      --input-bg: rgba(241, 245, 249, 0.6);
+      --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.05);
+      
+      --mesh-color-1: radial-gradient(at 10% 20%, rgba(79, 70, 229, 0.1) 0px, transparent 50%);
+      --mesh-color-2: radial-gradient(at 90% 80%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+    }
+
+    body { 
+      font-family: 'Inter', system-ui, sans-serif; 
+      background-color: var(--bg-base); 
+      background-image: var(--mesh-color-1), var(--mesh-color-2);
+      background-attachment: fixed;
+      color: var(--text-main); 
+      min-height: 100vh; padding: 24px 16px; 
+      transition: background-color 0.5s ease;
+      overflow-x: hidden;
+    }
+
+    /* SCROLL LOCK FOR MODALS */
+    body.modal-open { overflow: hidden; }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+    h1, h2, h3, .name { font-family: 'Plus Jakarta Sans', sans-serif; }
+    #app-container { max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
+    
+    .glass {
+      background: var(--card-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* Header */
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 16px 24px; border-radius: 20px; z-index: 100; position: relative;}
+    .brand-group { display: flex; align-items: center; gap: 16px; }
+    .logo-icon { width: 48px; height: 48px; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .logo-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .brand-text .name { font-size: 24px; font-weight: 800; display: flex; align-items: center; }
+    .role-badge { background: var(--primary-alpha); color: var(--primary); font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; margin-left: 12px; }
+    
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .action-btn { background: var(--input-bg); border: 1px solid var(--card-border); color: var(--text-main); cursor: pointer; padding: 12px; border-radius: 14px; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex;}
+    .action-btn:hover { color: var(--primary); border-color: var(--primary); transform: scale(1.05); }
+    
+    /* Sticky Search */
+    .sticky-bar { position: sticky; top: 10px; z-index: 50; display: flex; gap: 12px; margin-bottom: 24px; }
+    .search-wrapper { flex: 1; position: relative; }
+    .search-wrapper input { width: 100%; padding: 16px 24px 16px 50px; border-radius: 16px; border: 1px solid var(--card-border); background: var(--card-bg); color: var(--text-main); font-size: 16px; outline: none; transition: 0.3s; backdrop-filter: var(--glass-blur); box-shadow: var(--shadow-soft); }
+    .search-wrapper input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-alpha), var(--shadow-soft); }
+    .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-soft); }
+    
+    /* Filters */
+    .controls-wrapper { border-radius: 20px; padding: 20px 24px; margin-bottom: 24px; display: flex; flex-direction: column; gap: 20px; }
+    .cat-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .quick-btn { background: var(--input-bg); border: 1px solid var(--card-border); color: var(--text-soft); font-size: 13px; font-weight: 600; padding: 10px 16px; border-radius: 12px; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 6px; }
+    .quick-btn:hover { color: var(--text-main); border-color: var(--text-soft); }
+    .quick-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 15px var(--primary-alpha); }
+    
+    .price-slider-container { display: flex; align-items: center; gap: 16px; width: 100%; border-top: 1px solid var(--card-border); padding-top: 20px; }
+    .price-slider-container label { font-size: 14px; font-weight: 600; color: var(--text-soft); white-space: nowrap; }
+    .price-slider { flex: 1; accent-color: var(--primary); cursor: pointer; }
+    .price-display { background: var(--input-bg); padding: 8px 16px; border-radius: 10px; font-weight: 700; font-size: 14px; border: 1px solid var(--card-border); }
+
+    /* Grid & Cards */
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; perspective: 1000px; }
+    .metric-card { border-radius: 20px; padding: 24px; position: relative; display: flex; flex-direction: column; cursor: pointer; transition: transform 0.1s ease-out, box-shadow 0.3s ease, border-color 0.3s ease; transform-style: preserve-3d; opacity: 0; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .metric-card:hover { border-color: var(--primary); box-shadow: 0 15px 35px rgba(0,0,0,0.4); z-index: 2; }
+    body.light-theme .metric-card:hover { box-shadow: 0 15px 35px rgba(79, 70, 229, 0.15); }
+    
+    .card-header { margin-bottom: 20px; padding-right: 40px; pointer-events: none;}
+    .phone-name { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .phone-price { font-size: 18px; font-weight: 700; color: var(--success); }
+
+    .antutu-container { margin-bottom: 20px; pointer-events: none; }
+    .antutu-header { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-soft); }
+    .antutu-header span:last-child { color: var(--text-main); font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif;}
+    .antutu-track { width: 100%; height: 8px; background: var(--input-bg); border-radius: 10px; overflow: hidden; border: 1px solid var(--card-border); }
+    .antutu-fill { height: 100%; border-radius: 10px; transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1); width: 0%; }
+
+    .card-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; pointer-events: none; }
+    .card-pill { background: var(--input-bg); border: 1px solid var(--card-border); font-size: 12px; font-weight: 600; padding: 6px 12px; border-radius: 10px; display: flex; align-items: center; gap: 6px; }
+    .card-pill svg { color: var(--primary); }
+
+    .compare-label { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 14px; cursor: pointer; font-size: 14px; font-weight: 700; transition: 0.3s; margin-top: auto; z-index: 10; position: relative; }
+    .compare-label:hover { border-color: var(--primary); background: var(--primary-alpha); }
+    .compare-label input { display: none; }
+    .custom-checkbox { width: 22px; height: 22px; border: 2px solid var(--text-soft); border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .custom-checkbox svg { width: 14px; height: 14px; color: white; opacity: 0; transform: scale(0.5); transition: 0.2s; }
+    .compare-label input:checked + .custom-checkbox { background: var(--primary); border-color: var(--primary); }
+    .compare-label input:checked + .custom-checkbox svg { opacity: 1; transform: scale(1); }
+
+    /* Compare Bar Bottom */
+    #compare-bar { position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%); background: var(--card-bg); backdrop-filter: blur(24px); border: 1px solid var(--card-border); padding: 16px 24px; border-radius: 20px; display: flex; align-items: center; gap: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 100; width: max-content; max-width: 90vw; }
+    #compare-bar.show { bottom: 40px; }
+    .selected-avatars { display: flex; gap: 8px; }
+    .avatar-bubble { width: 40px; height: 40px; border-radius: 50%; background: var(--input-bg); border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; text-align: center; line-height: 1.1; animation: slideUp 0.3s ease; }
+    .btn-compare-action { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 15px; }
+    .btn-compare-action:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 20px var(--primary-alpha); }
+
+    /* Modals */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.3s ease; }
+    .modal-overlay.show { opacity: 1; }
+    .modal-content { background: var(--bg-base); background-image: var(--mesh-color-1); border: 1px solid var(--card-border); border-radius: 24px; width: 100%; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .modal-overlay.show .modal-content { transform: scale(1); }
+    
+    .compare-modal-size { max-width: 1400px; }
+    .details-modal-size { max-width: 900px; }
+    
+    .close-modal { position: absolute; top: 20px; right: 20px; background: var(--input-bg); border: 1px solid var(--card-border); color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; z-index: 50;}
+    .close-modal:hover { background: var(--danger); color: white; border-color: var(--danger); transform: rotate(90deg); }
+
+    /* Epic Clash Overlay (Mobile Friendly) */
+    #clash-screen { position: absolute; inset: 0; background: var(--bg-base); z-index: 40; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 900; gap: 24px; text-align: center; padding: 20px; }
+    .clash-name { opacity: 0; transform: translateY(-30px); animation: clashIn 0.5s forwards; line-height: 1.2; max-width: 90vw; word-wrap: break-word;}
+    .clash-name:last-child { transform: translateY(30px); }
+    .clash-vs { color: var(--primary); font-size: 48px; font-style: italic; opacity: 0; animation: popIn 0.4s 0.3s forwards; }
+    @keyframes clashIn { to { opacity: 1; transform: translateY(0); } }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0); } 80% { transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+
+    /* Compare Table */
+    .table-container { overflow-y: auto; overflow-x: auto; padding: 30px; opacity: 0; transition: opacity 0.5s 1.2s; width: 100%; -webkit-overflow-scrolling: touch; }
+    .compare-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 600px; }
+    .compare-table th, .compare-table td { padding: 16px; border-bottom: 1px solid var(--card-border); border-right: 1px solid var(--card-border); text-align: center; }
+    .compare-table th:first-child, .compare-table td:first-child { border-left: 1px solid var(--card-border); position: sticky; left: 0; background: var(--card-bg); z-index: 20; backdrop-filter: blur(10px); }
+    .compare-table tr:first-child th { border-top: 1px solid var(--card-border); border-radius: 12px 12px 0 0; }
+    .compare-table th { background: rgba(0,0,0,0.4); font-weight: 800; color: var(--text-main); font-size: 16px; position: sticky; top: 0; z-index: 30; backdrop-filter: blur(10px); }
+    .compare-table td { color: var(--text-soft); font-size: 14px; font-weight: 500; transition: background 0.2s; background: var(--card-bg);}
+    .compare-table tr:hover td { background: var(--input-bg); color: var(--text-main); }
+    .spec-row-title { font-weight: 800 !important; color: var(--primary) !important; text-align: left !important; background: rgba(139, 92, 246, 0.05) !important; font-size: 15px !important; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* Bento Grid for Details Modal */
+    .bento-modal-body { padding: 30px; overflow-y: auto; }
+    .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; grid-auto-rows: minmax(100px, auto); }
+    .bento-box { background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+    
+    .bento-header { grid-column: span 4; text-align: center; background: linear-gradient(135deg, var(--card-bg), var(--primary-alpha)); }
+    .bento-header h2 { font-size: 32px; font-weight: 900; margin-bottom: 8px; }
+    .bento-header p { font-size: 24px; color: var(--success); font-weight: 800; }
+    
+    .bento-score { grid-column: span 2; align-items: center; text-align: center; }
+    .bento-score-title { font-size: 14px; color: var(--text-soft); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+    .bento-score-num { font-size: 36px; font-weight: 900; font-family: 'Plus Jakarta Sans'; background: linear-gradient(90deg, var(--primary), #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    .bento-rings { grid-column: span 4; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; background: transparent; border: none; padding: 0; }
+    .ring-box { background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;}
+    
+    .circular-chart { display: block; margin: 0 auto; max-width: 80%; max-height: 250px; }
+    .circle-bg { fill: none; stroke: var(--card-border); stroke-width: 3.8; }
+    .circle { fill: none; stroke-width: 2.8; stroke-linecap: round; transition: stroke-dasharray 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+    .ring-text { font-size: 12px; font-weight: 700; color: var(--text-soft); text-transform: uppercase; margin-top: 8px;}
+    .ring-icon { font-size: 20px; margin-bottom: -5px;}
+
+    /* Deep Dive Specs Table (Inside Bento) */
+    .bento-deep-dive { grid-column: span 4; padding: 0; background: transparent; border: none; }
+    .deep-dive-section { background: var(--input-bg); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
+    .deep-dive-header { background: rgba(255,255,255,0.03); padding: 14px 20px; font-weight: 800; font-size: 16px; color: var(--primary); border-bottom: 1px solid var(--card-border); display: flex; align-items: center; gap: 10px; }
+    .deep-dive-row { display: flex; border-bottom: 1px solid var(--card-border); }
+    .deep-dive-row:last-child { border-bottom: none; }
+    .deep-dive-label { width: 35%; padding: 14px 20px; font-weight: 600; color: var(--text-main); border-right: 1px solid var(--card-border); font-size: 14px; background: rgba(0,0,0,0.1); }
+    .deep-dive-value { width: 65%; padding: 14px 20px; color: var(--text-soft); font-size: 14px; line-height: 1.5; }
+
+    @media (max-width: 768px) {
+      .brand-group { flex-direction: row; }
+      .bento-grid { grid-template-columns: 1fr; }
+      .bento-header, .bento-score, .bento-rings, .bento-deep-dive { grid-column: span 1; }
+      .bento-rings { grid-template-columns: 1fr 1fr; gap: 12px;}
+      .header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      
+      #compare-bar { width: calc(100% - 32px); flex-direction: column; gap: 12px; border-radius: 16px; bottom: -150px; }
+      #clash-screen { flex-direction: column; gap: 12px; font-size: 26px; }
+      .clash-vs { font-size: 32px; }
+      
+      .table-container { padding: 16px; }
+      .compare-table th, .compare-table td { padding: 12px; font-size: 13px; }
+      
+      .deep-dive-row { flex-direction: column; }
+      .deep-dive-label { width: 100%; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 10px 16px; }
+      .deep-dive-value { width: 100%; padding: 10px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app-container">
+    
+    <!-- Header -->
+    <div class="header glass">
+      <div class="brand-group">
+        <div class="logo-icon">
+          <img src="logo.png" alt="RJ Mobile Logo" onerror="this.src='https://via.placeholder.com/48/8b5cf6/ffffff?text=RJ'"/>
+        </div>
+        <div class="brand-text">
+          <div class="name">RJ Mobile <span class="role-badge">PRO</span></div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--text-soft); margin-top: 4px;">Expanded Inventory & Smart Compare</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="action-btn" title="Toggle Theme">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sticky Search -->
+    <div class="sticky-bar">
+      <div class="search-wrapper">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="search-input" placeholder="Search phones, specs, or brands...">
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-wrapper glass">
+      <div class="cat-filters" id="category-filters">
+        <button class="quick-btn" data-cat="Apple">Apple</button>
+        <button class="quick-btn" data-cat="Samsung">Samsung</button>
+        <button class="quick-btn" data-cat="Google">Google</button>
+        <button class="quick-btn" data-cat="OnePlus">OnePlus</button>
+        <button class="quick-btn" data-cat="Xiaomi">Xiaomi</button>
+        <div style="width: 1px; background: var(--card-border); margin: 0 8px;"></div>
+        <button class="quick-btn" data-cat="Premium">💎 Premium</button>
+        <button class="quick-btn" data-cat="Camera">📸 Camera</button>
+        <button class="quick-btn" data-cat="Gaming">🎮 Gaming</button>
+        <button id="btn-clear-cats" class="quick-btn" style="color:var(--danger); border-color: transparent;">✖ Clear All</button>
+      </div>
+      
+      <div class="price-slider-container">
+        <label>Max Price:</label>
+        <input type="range" id="price-slider" class="price-slider" min="30000" max="200000" step="5000" value="200000">
+        <div class="price-display" id="price-display">₹2,00,000+</div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid" id="product-grid"></div>
+  </div>
+
+  <!-- Compare Bar Bottom -->
+  <div id="compare-bar">
+    <div>
+      <div style="font-size:12px; color:var(--text-soft); font-weight:700; margin-bottom:4px; text-transform:uppercase;">Selected for Compare</div>
+      <div class="selected-avatars" id="selected-avatars-container"></div>
+    </div>
+    <button class="btn-compare-action" onclick="showCompareModal()">Compare Now</button>
+    <button class="action-btn" onclick="clearCompare()" style="border-radius: 50%; padding: 10px;" title="Clear">✖</button>
+  </div>
+
+  <!-- Compare Modal -->
+  <div id="compare-modal" class="modal-overlay">
+    <div class="modal-content compare-modal-size">
+      <button class="close-modal" onclick="closeModal('compare-modal')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      <div id="clash-screen"></div>
+      <div class="table-container" id="compare-table-container"></div>
+    </div>
+  </div>
+
+  <!-- Details Bento Modal -->
+  <div id="details-modal" class="modal-overlay">
+    <div class="modal-content details-modal-size">
+      <button class="close-modal" onclick="closeModal('details-modal')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      <div class="bento-modal-body" id="details-body"></div>
+    </div>
+  </div>
+
+  <script>
+    const checkIcon = `<span style="color:var(--success); font-weight:bold;">✔ Yes</span>`;
+    const crossIcon = `<span style="color:var(--danger); font-weight:bold;">✘ No</span>`;
+    
+    // ==========================================
+    // DEEP DIVE DATABASE
+    // ==========================================
+    const mobiles = [
+      { 
+        slug: "iphone-16-pro", name: "iPhone 16 Pro Max", brand: "Apple", categories: ["Premium", "Camera", "Gaming"], antutu: 1650000, 
+        scores: { bat: 92, cam: 98, game: 95, disp: 95 },
+        variants: [{ ramRom: "8GB / 256GB", price: "₹1,44,900", numPrice: 144900 }],
+        display: { panel: "LTPO Super Retina XDR OLED", size: "6.9 inches", resolution: "1320 x 2868 pixels", refresh: "120Hz (ProMotion)", bright: "2000 nits (HBM)" },
+        perf: { chip: "Apple A18 Pro (3 nm)", cpu: "Hexa-core", gpu: "Apple GPU (6-core)", os: "iOS 18" },
+        camMain: { specs: "48MP Wide (1.22µm), 48MP Ultrawide, 12MP Telephoto (5x Optical)", video: "4K@120fps Dolby Vision HDR" },
+        camSelfie: { specs: "12MP Wide, 3D LiDAR", video: "4K@60fps" },
+        bat: { cap: "4685 mAh", wired: "30W Fast Charging", wireless: "25W MagSafe, 15W Qi2" },
+        body: { dim: "163 x 77.6 x 8.25 mm", weight: "227g", build: "Titanium Frame, Ceramic Shield Front", ip: "IP68" }
+      },
+      { 
+        slug: "galaxy-s24-ultra", name: "Galaxy S24 Ultra", brand: "Samsung", categories: ["Premium", "Camera", "Gaming"], antutu: 1950000, 
+        scores: { bat: 90, cam: 96, game: 94, disp: 98 },
+        variants: [{ ramRom: "12GB / 256GB", price: "₹1,29,999", numPrice: 129999 }],
+        display: { panel: "Dynamic LTPO AMOLED 2X", size: "6.8 inches", resolution: "1440 x 3120 pixels", refresh: "120Hz", bright: "2600 nits (Peak), Anti-reflective" },
+        perf: { chip: "Snapdragon 8 Gen 3 (4 nm)", cpu: "Octa-core (1x3.39GHz Cortex-X4)", gpu: "Adreno 750", os: "Android 14, One UI 6.1" },
+        camMain: { specs: "200MP Wide, 50MP Tele (5x), 10MP Tele (3x), 12MP UW", video: "8K@30fps, 4K@120fps" },
+        camSelfie: { specs: "12MP Wide (Dual Pixel PDAF)", video: "4K@60fps" },
+        bat: { cap: "5000 mAh", wired: "45W Wired (65% in 30 min)", wireless: "15W Qi/PMA" },
+        body: { dim: "162.3 x 79 x 8.6 mm", weight: "232g", build: "Titanium Frame, Gorilla Armor Front/Back", ip: "IP68" }
+      },
+      { 
+        slug: "pixel-9-pro-xl", name: "Pixel 9 Pro XL", brand: "Google", categories: ["Premium", "Camera"], antutu: 1250000, 
+        scores: { bat: 85, cam: 99, game: 75, disp: 94 },
+        variants: [{ ramRom: "16GB / 256GB", price: "₹1,24,999", numPrice: 124999 }],
+        display: { panel: "LTPO OLED", size: "6.8 inches", resolution: "1344 x 2992 pixels", refresh: "120Hz", bright: "3000 nits (Peak)" },
+        perf: { chip: "Google Tensor G4 (4 nm)", cpu: "Octa-core", gpu: "Mali-G715", os: "Android 14 (7 years upgrades)" },
+        camMain: { specs: "50MP Wide, 48MP Telephoto (5x), 48MP Ultrawide", video: "8K@30fps (Video Boost), 4K@60fps" },
+        camSelfie: { specs: "42MP Ultrawide (PDAF)", video: "4K@60fps" },
+        bat: { cap: "5060 mAh", wired: "37W Wired", wireless: "23W Wireless" },
+        body: { dim: "162.8 x 76.6 x 8.5 mm", weight: "221g", build: "Aluminum Frame, Gorilla Glass Victus 2", ip: "IP68" }
+      },
+      { 
+        slug: "oneplus-12", name: "OnePlus 12", brand: "OnePlus", categories: ["Premium", "Gaming"], antutu: 2150000, 
+        scores: { bat: 96, cam: 88, game: 96, disp: 92 },
+        variants: [{ ramRom: "12GB / 256GB", price: "₹64,999", numPrice: 64999 }],
+        display: { panel: "LTPO AMOLED, 1B colors, Dolby Vision", size: "6.82 inches", resolution: "1440 x 3168 pixels", refresh: "120Hz", bright: "4500 nits (Peak)" },
+        perf: { chip: "Snapdragon 8 Gen 3 (4 nm)", cpu: "Octa-core", gpu: "Adreno 750", os: "Android 14, OxygenOS 14" },
+        camMain: { specs: "50MP Wide (OIS), 64MP Periscope (3x), 48MP UW", video: "8K@24fps, 4K@60fps" },
+        camSelfie: { specs: "32MP Wide", video: "4K@30fps" },
+        bat: { cap: "5400 mAh", wired: "100W Wired (1-100% in 26 min)", wireless: "50W Wireless" },
+        body: { dim: "164.3 x 75.8 x 9.2 mm", weight: "220g", build: "Aluminum Frame, Gorilla Glass Victus 2", ip: "IP65" }
+      },
+      { 
+        slug: "xiaomi-14-ultra", name: "Xiaomi 14 Ultra", brand: "Xiaomi", categories: ["Premium", "Camera"], antutu: 2050000, 
+        scores: { bat: 90, cam: 98, game: 92, disp: 93 },
+        variants: [{ ramRom: "16GB / 512GB", price: "₹99,999", numPrice: 99999 }],
+        display: { panel: "LTPO AMOLED, 68B colors", size: "6.73 inches", resolution: "1440 x 3200 pixels", refresh: "120Hz", bright: "3000 nits (Peak)" },
+        perf: { chip: "Snapdragon 8 Gen 3 (4 nm)", cpu: "Octa-core", gpu: "Adreno 750", os: "Android 14, HyperOS" },
+        camMain: { specs: "50MP (1-inch, variable aperture), 50MP Tele (3.2x), 50MP Tele (5x), 50MP UW (Leica optics)", video: "8K@30fps, 4K@120fps" },
+        camSelfie: { specs: "32MP Wide", video: "4K@60fps" },
+        bat: { cap: "5000 mAh", wired: "90W Wired", wireless: "80W Wireless (1-100% in 46 min)" },
+        body: { dim: "161.4 x 75.3 x 9.2 mm", weight: "224g", build: "Titanium Frame (optional), Xiaomi Shield Glass", ip: "IP68" }
+      },
+      { 
+        slug: "vivo-x100-pro", name: "Vivo X100 Pro", brand: "Vivo", categories: ["Camera", "Premium"], antutu: 2100000, 
+        scores: { bat: 95, cam: 97, game: 90, disp: 90 },
+        variants: [{ ramRom: "16GB / 512GB", price: "₹89,999", numPrice: 89999 }],
+        display: { panel: "LTPO AMOLED", size: "6.78 inches", resolution: "1260 x 2800 pixels", refresh: "120Hz", bright: "3000 nits (Peak)" },
+        perf: { chip: "Mediatek Dimensity 9300 (4 nm)", cpu: "Octa-core", gpu: "Immortalis-G720 MC12", os: "Android 14, Funtouch 14" },
+        camMain: { specs: "50MP (1-inch), 50MP Periscope Tele (4.3x Zeiss APO), 50MP UW", video: "8K@30fps, 4K@60fps (Zeiss Cinematic)" },
+        camSelfie: { specs: "32MP Ultrawide", video: "1080p@60fps" },
+        bat: { cap: "5400 mAh", wired: "100W Wired", wireless: "50W Wireless" },
+        body: { dim: "164.1 x 75.3 x 8.9 mm", weight: "221g", build: "Aluminum Frame, Glass Back", ip: "IP68" }
+      }
+    ];
+
+    let selectedForCompare = [];
+    let activeCategories = [];
+    const searchInput = document.getElementById('search-input');
+    const priceSlider = document.getElementById('price-slider');
+    const gridContainer = document.getElementById('product-grid');
+
+    // Theme Logic
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    function applyTheme() {
+      const isLight = localStorage.getItem('rj_theme') === 'light';
+      document.body.classList.toggle('light-theme', isLight);
+      themeToggleBtn.innerHTML = isLight ? 
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line></svg>' : 
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+    }
+    themeToggleBtn.addEventListener('click', () => { localStorage.setItem('rj_theme', document.body.classList.contains('light-theme') ? 'dark' : 'light'); applyTheme(); });
+    applyTheme();
+
+    function renderGrid() {
+      gridContainer.innerHTML = '';
+      const query = searchInput.value.toLowerCase();
+      const maxP = parseInt(priceSlider.value);
+
+      let filtered = mobiles.filter(m => {
+        const matchPrice = m.variants[0].numPrice <= maxP;
+        const matchCat = activeCategories.length === 0 || m.categories.some(c => activeCategories.includes(c)) || activeCategories.includes(m.brand);
+        const matchSearch = m.name.toLowerCase().includes(query) || m.brand.toLowerCase().includes(query) || m.perf.chip.toLowerCase().includes(query);
+        return matchCat && matchSearch && matchPrice;
+      });
+
+      if(filtered.length === 0) {
+        gridContainer.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding: 60px; color:var(--text-soft);"><h3>No phones match your criteria.</h3></div>`; return;
+      }
+
+      filtered.forEach((phone, index) => {
+        const isChecked = selectedForCompare.includes(phone.slug) ? 'checked' : '';
+        const antutuPercent = (phone.antutu / 3000000) * 100;
+        const antutuColor = phone.antutu > 1800000 ? 'linear-gradient(90deg, #8b5cf6, #3b82f6)' : 'linear-gradient(90deg, #10b981, #34d399)';
+
+        const card = document.createElement('div');
+        card.className = 'metric-card glass';
+        card.style.animationDelay = `${index * 0.08}s`;
+        
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+          card.style.transform = `perspective(1000px) rotateX(${((y / rect.height) - 0.5) * -10}deg) rotateY(${((x / rect.width) - 0.5) * 10}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        card.addEventListener('mouseleave', () => card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)');
+
+        card.onclick = (e) => { if(!e.target.closest('label')) showDetailsModal(phone.slug); };
+
+        card.innerHTML = `
+          <div class="card-header">
+            <div class="phone-name">${phone.name}</div>
+            <div class="phone-price">${phone.variants[0].price}</div>
+          </div>
+          <div class="card-pills">
+            <div class="card-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg> ${phone.variants[0].ramRom.split('/')[0]}</div>
+            <div class="card-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg> ${phone.perf.chip.split(' (')[0]}</div>
+          </div>
+          <div class="antutu-container">
+            <div class="antutu-header"><span>AnTuTu Benchmark</span> <span class="counter" data-target="${phone.antutu}">0</span></div>
+            <div class="antutu-track"><div class="antutu-fill" style="width: ${antutuPercent}%; background: ${antutuColor};"></div></div>
+          </div>
+          <label class="compare-label" onclick="event.stopPropagation()">
+            <input type="checkbox" value="${phone.slug}" onchange="toggleCompare('${phone.slug}', this)" ${isChecked}>
+            <div class="custom-checkbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            Add to Compare
+          </label>
+        `;
+        gridContainer.appendChild(card);
+      });
+      runCounters();
+    }
+
+    function runCounters() {
+      document.querySelectorAll('.counter').forEach(el => {
+        const target = +el.getAttribute('data-target'); let count = 0; const increment = target / 50;
+        const update = () => { count += increment; if(count < target) { el.innerText = Math.ceil(count).toLocaleString(); requestAnimationFrame(update); } else { el.innerText = target.toLocaleString(); } };
+        update();
+      });
+    }
+
+    document.querySelectorAll('.quick-btn[data-cat]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const cat = e.target.getAttribute('data-cat');
+        if (activeCategories.includes(cat)) { activeCategories = activeCategories.filter(c => c !== cat); e.target.classList.remove('active'); }
+        else { activeCategories.push(cat); e.target.classList.add('active'); }
+        renderGrid();
+      });
+    });
+    document.getElementById('btn-clear-cats').addEventListener('click', () => { activeCategories = []; document.querySelectorAll('.quick-btn[data-cat]').forEach(b => b.classList.remove('active')); renderGrid(); });
+    searchInput.addEventListener('input', renderGrid);
+    priceSlider.addEventListener('input', (e) => { document.getElementById('price-display').innerText = `Up to ₹${parseInt(e.target.value).toLocaleString()}`; renderGrid(); });
+
+    // Compare Logic
+    function toggleCompare(slug, checkbox) {
+      if (checkbox.checked) {
+        if (selectedForCompare.length >= 3) { alert("Maximum 3 phones allowed."); checkbox.checked = false; return; }
+        selectedForCompare.push(slug);
+      } else { selectedForCompare = selectedForCompare.filter(s => s !== slug); }
+      updateCompareBar();
+    }
+    function clearCompare() { selectedForCompare = []; document.querySelectorAll('.compare-label input').forEach(cb => cb.checked = false); updateCompareBar(); }
+    
+    function updateCompareBar() {
+      const bar = document.getElementById('compare-bar'); const container = document.getElementById('selected-avatars-container');
+      container.innerHTML = '';
+      selectedForCompare.forEach(slug => { const p = mobiles.find(m => m.slug === slug); container.innerHTML += `<div class="avatar-bubble">${p.name.substring(0,3).toUpperCase()}</div>`; });
+      bar.classList.toggle('show', selectedForCompare.length >= 2);
+    }
+
+    // MODAL LOGIC (With Scroll Lock Fix)
+    function closeModal(id) { 
+      document.getElementById(id).classList.remove('show'); 
+      setTimeout(() => {
+        document.getElementById(id).style.display='none';
+        document.body.classList.remove('modal-open');
+      }, 300); 
+    }
+
+    function showCompareModal() {
+      if(selectedForCompare.length < 2) return;
+      document.body.classList.add('modal-open'); // SCROLL LOCK
+
+      const modal = document.getElementById('compare-modal'); const clash = document.getElementById('clash-screen'); const container = document.getElementById('compare-table-container');
+      const phones = mobiles.filter(m => selectedForCompare.includes(m.slug));
+      
+      modal.style.display = 'flex'; setTimeout(() => modal.classList.add('show'), 10);
+      
+      clash.style.display = 'flex'; container.style.opacity = '0';
+      clash.innerHTML = `<div class="clash-name">${phones[0].name}</div><div class="clash-vs">VS</div><div class="clash-name">${phones[1].name}</div>`;
+      if(phones[2]) clash.innerHTML += `<div class="clash-vs">VS</div><div class="clash-name">${phones[2].name}</div>`;
+      setTimeout(() => { clash.style.display = 'none'; container.style.opacity = '1'; }, 1800);
+
+      const maxAntutu = Math.max(...phones.map(p => p.antutu));
+      let html = `<table class="compare-table">`;
+      html += `<tr><th style="text-align:left;">Features</th>${phones.map(p => `<th>${p.name}<br><span style="font-size:14px; color:var(--success);">${p.variants[0].price}</span></th>`).join('')}</tr>`;
+      
+      // Performance
+      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">Performance</td></tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">Chipset</td>${phones.map(p => `<td>${p.perf.chip}</td>`).join('')}</tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">AnTuTu Score</td>${phones.map(p => `<td class="${p.antutu===maxAntutu?'winner-cell':''}">${p.antutu.toLocaleString()}</td>`).join('')}</tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">OS</td>${phones.map(p => `<td>${p.perf.os}</td>`).join('')}</tr>`;
+      
+      // Display
+      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">Display</td></tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">Panel & Size</td>${phones.map(p => `<td>${p.display.panel}<br><span style="font-size:12px;">${p.display.size}</span></td>`).join('')}</tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">Brightness</td>${phones.map(p => `<td>${p.display.bright}</td>`).join('')}</tr>`;
+      
+      // Camera
+      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">Camera</td></tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">Main Specs</td>${phones.map(p => `<td>${p.camMain.specs}</td>`).join('')}</tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">Selfie</td>${phones.map(p => `<td>${p.camSelfie.specs}</td>`).join('')}</tr>`;
+      
+      // Battery & Build
+      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">Battery & Build</td></tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">Battery / Charging</td>${phones.map(p => `<td>${p.bat.cap}<br><span style="font-size:12px;">${p.bat.wired} | ${p.bat.wireless}</span></td>`).join('')}</tr>`;
+      html += `<tr><td style="text-align:left; font-weight:700;">Weight & IP</td>${phones.map(p => `<td>${p.body.weight} | ${p.body.ip}</td>`).join('')}</tr>`;
+      
+      html += `</table>`;
+      container.innerHTML = html;
+    }
+
+    // Ultra-Detailed Bento Modal
+    function showDetailsModal(slug) {
+      const phone = mobiles.find(m => m.slug === slug);
+      if(!phone) return;
+      document.body.classList.add('modal-open'); // SCROLL LOCK
+
+      const modal = document.getElementById('details-modal');
+      const body = document.getElementById('details-body');
+      
+      const createRing = (score, label, icon) => {
+        const dash = `${score}, 100`; const color = score > 85 ? 'var(--success)' : (score > 70 ? '#f59e0b' : 'var(--danger)');
+        return `
+          <div class="ring-box">
+            <div class="ring-icon">${icon}</div>
+            <svg viewBox="0 0 36 36" class="circular-chart">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path class="circle" stroke="${color}" stroke-dasharray="0, 100" data-dash="${dash}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <text x="18" y="22.5" font-size="10" font-weight="800" fill="var(--text-main)" text-anchor="middle">${score}</text>
+            </svg>
+            <div class="ring-text">${label}</div>
+          </div>`;
+      };
+
+      const createSpecRow = (label, val) => `<div class="deep-dive-row"><div class="deep-dive-label">${label}</div><div class="deep-dive-value">${val}</div></div>`;
+
+      body.innerHTML = `
+        <div class="bento-grid">
+          <!-- Top Bento Visuals -->
+          <div class="bento-box bento-header">
+            <h2>${phone.name}</h2>
+            <p>${phone.variants[0].price}</p>
+            <div style="margin-top:10px; color:var(--text-soft); font-weight:600;">${phone.variants[0].ramRom}</div>
+          </div>
+          <div class="bento-box bento-score">
+            <div class="bento-score-title">AnTuTu Score</div>
+            <div class="bento-score-num counter" data-target="${phone.antutu}">0</div>
+          </div>
+          <div class="bento-box bento-rings">
+            ${createRing(phone.scores.cam, 'Camera', '📸')}
+            ${createRing(phone.scores.bat, 'Battery', '🔋')}
+            ${createRing(phone.scores.game, 'Gaming', '🎮')}
+            ${createRing(phone.scores.disp, 'Display', '📺')}
+          </div>
+
+          <!-- Deep Dive Specs Section -->
+          <div class="bento-box bento-deep-dive">
+            <h3 style="margin-bottom:16px; font-size:20px; font-weight:800; padding-left:4px;">Deep Dive Specifications</h3>
+            
+            <div class="deep-dive-section">
+              <div class="deep-dive-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/></svg> Display</div>
+              ${createSpecRow('Panel Type', phone.display.panel)}
+              ${createSpecRow('Size', phone.display.size)}
+              ${createSpecRow('Resolution', phone.display.resolution)}
+              ${createSpecRow('Refresh Rate', phone.display.refresh)}
+              ${createSpecRow('Peak Brightness', phone.display.bright)}
+            </div>
+
+            <div class="deep-dive-section">
+              <div class="deep-dive-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg> Performance</div>
+              ${createSpecRow('Chipset', phone.perf.chip)}
+              ${createSpecRow('CPU', phone.perf.cpu)}
+              ${createSpecRow('GPU', phone.perf.gpu)}
+              ${createSpecRow('Operating System', phone.perf.os)}
+            </div>
+
+            <div class="deep-dive-section">
+              <div class="deep-dive-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> Cameras</div>
+              ${createSpecRow('Rear Camera Setup', phone.camMain.specs)}
+              ${createSpecRow('Rear Video', phone.camMain.video)}
+              ${createSpecRow('Selfie Camera', phone.camSelfie.specs)}
+              ${createSpecRow('Selfie Video', phone.camSelfie.video)}
+            </div>
+
+            <div class="deep-dive-section">
+              <div class="deep-dive-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> Battery & Charging</div>
+              ${createSpecRow('Capacity', phone.bat.cap)}
+              ${createSpecRow('Wired Charging', phone.bat.wired)}
+              ${createSpecRow('Wireless Charging', phone.bat.wireless)}
+            </div>
+
+            <div class="deep-dive-section">
+              <div class="deep-dive-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/></svg> Build & Body</div>
+              ${createSpecRow('Dimensions', phone.body.dim)}
+              ${createSpecRow('Weight', phone.body.weight)}
+              ${createSpecRow('Build Materials', phone.body.build)}
+              ${createSpecRow('IP Rating (Water/Dust)', phone.body.ip)}
+            </div>
+          </div>
+        </div>
+      `;
+      
+      modal.style.display = 'flex';
+      setTimeout(() => {
+        modal.classList.add('show');
+        runCounters();
+        setTimeout(() => document.querySelectorAll('.circle').forEach(c => c.setAttribute('stroke-dasharray', c.getAttribute('data-dash'))), 300);
+      }, 10);
+    }
+
+    renderGrid();
+  </script>
+</body>
+</html>
