@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RJ Mobile — Pro Specs & Compare (V2)</title>
+  <title>RJ Mobile — Ultimate Specs & Compare (V3)</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -25,6 +25,7 @@
       --text-soft: #a1a1aa;
       --success: #10b981; 
       --danger: #ef4444;
+      --warning: #f59e0b;
       --input-bg: #09090b;
       --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
@@ -102,7 +103,7 @@
 
     /* Modal */
     #compare-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-    .modal-content { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; width: 100%; max-width: 1000px; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative; box-shadow: var(--shadow-soft); }
+    .modal-content { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; width: 100%; max-width: 1100px; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative; box-shadow: var(--shadow-soft); }
     .close-modal { position: absolute; top: 20px; right: 20px; background: var(--input-bg); border: 1px solid var(--card-border); color: var(--text-main); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
     .close-modal:hover { background: var(--danger); color: white; border-color: var(--danger); }
 
@@ -114,6 +115,10 @@
     .compare-table tr:hover td { background: var(--primary-alpha); color: var(--text-main); }
     .spec-row-title { font-weight: 700 !important; color: var(--primary) !important; text-align: left !important; background: var(--input-bg); font-size: 15px;}
     .empty-state { text-align: center; padding: 40px; color: var(--text-soft); font-size: 16px; grid-column: 1 / -1;}
+    
+    .icon-yes { color: var(--success); font-weight: bold; }
+    .icon-no { color: var(--danger); font-weight: bold; }
+    .icon-partial { color: var(--warning); font-weight: bold; }
   </style>
 </head>
 <body>
@@ -125,8 +130,8 @@
       <div class="brand-text" style="display: flex; flex-direction: row; align-items: center; gap: 16px;">
         <div style="width: 48px; height: 48px; background: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📱</div>
         <div>
-          <div class="name">RJ Mobile <span class="role-badge">CATALOG PRO V2</span></div>
-          <div class="tag">Expanded Inventory & Live Compare</div>
+          <div class="name">RJ Mobile <span class="role-badge">CATALOG PRO V3</span></div>
+          <div class="tag">Expanded Inventory & Ultimate Deep-Dive Compare</div>
         </div>
       </div>
       <div>
@@ -167,7 +172,7 @@
       <button class="close-modal" onclick="closeCompareModal()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
-      <h2 style="margin-bottom: 20px; font-size: 24px; text-align: center;">Ultimate Comparison</h2>
+      <h2 style="margin-bottom: 20px; font-size: 24px; text-align: center;">Ultimate Deep-Dive Comparison</h2>
       <div style="overflow-x: auto;">
         <table class="compare-table" id="compare-table"></table>
       </div>
@@ -175,57 +180,82 @@
   </div>
 
   <script>
-    // Expanded Phone Database
+    const checkIcon = `<span class="icon-yes">✔ Yes</span>`;
+    const crossIcon = `<span class="icon-no">✘ No</span>`;
+
+    // Expanded Phone Database with Deep Specs
     const mobiles = [
       {
         id: 1, name: "iPhone 15 Pro Max", brand: "Apple", price: "₹1,59,900", category: "premium",
-        processor: "A17 Pro Chip", camera: "48MP + 12MP + 12MP (5x Zoom)", battery: "4422mAh (MagSafe)", display: "6.7' Super Retina XDR 120Hz", storage: "8GB / 256GB", os: "iOS 17", weight: "221g",
+        processor: "A17 Pro (3nm)", ramRom: "8GB LPDDR5 / 256GB NVMe", os: "iOS 17",
+        display: "6.7' Super Retina XDR OLED, 120Hz ProMotion", resolution: "1290 x 2796 pixels", peakBrightness: "2000 nits",
+        cameraMain: "48MP OIS", cameraUltrawide: "12MP (120°)", cameraTelephoto: "12MP (5x Optical Zoom)", cameraSelfie: "12MP AF",
+        battery: "4422mAh", wiredCharging: "27W", wirelessCharging: "15W MagSafe / Qi2",
+        buildFront: "Ceramic Shield glass", buildBack: "Corning-made glass", buildFrame: "Grade 5 Titanium",
+        weight: "221g", ipRating: "IP68",
+        fingerprint: crossIcon, faceUnlock: checkIcon + " (Face ID 3D)", nfc: checkIcon, audioJack: crossIcon, sdCard: crossIcon,
+        usbType: "Type-C 3.2 Gen 2 (10Gbps)",
         colors: [{name: "Natural Titanium", hex: "#b4b1a8"}, {name: "Blue Titanium", hex: "#2b3443"}, {name: "Black Titanium", hex: "#1e1e1f"}]
       },
       {
         id: 2, name: "Galaxy S24 Ultra", brand: "Samsung", price: "₹1,29,999", category: "premium",
-        processor: "Snapdragon 8 Gen 3 (Galaxy)", camera: "200MP + 50MP + 12MP + 10MP", battery: "5000mAh (45W)", display: "6.8' Dynamic AMOLED 2X", storage: "12GB / 256GB", os: "Android 14 (One UI 6.1)", weight: "232g",
+        processor: "Snapdragon 8 Gen 3 for Galaxy (4nm)", ramRom: "12GB LPDDR5X / 256GB UFS 4.0", os: "Android 14 (One UI 6.1)",
+        display: "6.8' Dynamic LTPO AMOLED 2X, 120Hz", resolution: "1440 x 3120 pixels", peakBrightness: "2600 nits",
+        cameraMain: "200MP OIS", cameraUltrawide: "12MP (120°)", cameraTelephoto: "50MP (5x Optical) + 10MP (3x Optical)", cameraSelfie: "12MP AF",
+        battery: "5000mAh", wiredCharging: "45W", wirelessCharging: "15W Qi",
+        buildFront: "Gorilla Armor", buildBack: "Gorilla Glass", buildFrame: "Titanium",
+        weight: "232g", ipRating: "IP68",
+        fingerprint: checkIcon + " (Ultrasonic In-display)", faceUnlock: checkIcon + " (2D)", nfc: checkIcon, audioJack: crossIcon, sdCard: crossIcon,
+        usbType: "Type-C 3.2 Gen 1",
         colors: [{name: "Titanium Grey", hex: "#7a7776"}, {name: "Titanium Black", hex: "#353438"}, {name: "Titanium Violet", hex: "#4f415c"}]
       },
       {
         id: 3, name: "OnePlus 12", brand: "OnePlus", price: "₹64,999", category: "gaming",
-        processor: "Snapdragon 8 Gen 3", camera: "50MP + 64MP Tele + 48MP Ultrawide", battery: "5400mAh (100W)", display: "6.82' 120Hz ProXDR", storage: "12GB / 256GB", os: "Android 14 (OxygenOS 14)", weight: "220g",
+        processor: "Snapdragon 8 Gen 3 (4nm)", ramRom: "12GB LPDDR5X / 256GB UFS 4.0", os: "Android 14 (OxygenOS 14)",
+        display: "6.82' LTPO AMOLED, 120Hz ProXDR", resolution: "1440 x 3168 pixels", peakBrightness: "4500 nits (HDR)",
+        cameraMain: "50MP OIS", cameraUltrawide: "48MP (114°)", cameraTelephoto: "64MP (3x Optical Zoom)", cameraSelfie: "32MP",
+        battery: "5400mAh", wiredCharging: "100W", wirelessCharging: "50W AirVOOC",
+        buildFront: "Gorilla Glass Victus 2", buildBack: "Glass", buildFrame: "Aluminum",
+        weight: "220g", ipRating: "IP65",
+        fingerprint: checkIcon + " (Optical In-display)", faceUnlock: checkIcon + " (2D)", nfc: checkIcon, audioJack: crossIcon, sdCard: crossIcon,
+        usbType: "Type-C 3.2 Gen 1",
         colors: [{name: "Flowy Emerald", hex: "#234a41"}, {name: "Silky Black", hex: "#2a2d34"}]
       },
       {
-        id: 4, name: "iQOO 12 5G", brand: "iQOO", price: "₹52,999", category: "gaming",
-        processor: "Snapdragon 8 Gen 3 + Q1 Chip", camera: "50MP + 50MP + 64MP", battery: "5000mAh (120W)", display: "6.78' 144Hz AMOLED", storage: "12GB / 256GB", os: "Android 14 (Funtouch OS)", weight: "203g",
-        colors: [{name: "Legend (White)", hex: "#ffffff"}, {name: "Alpha (Black)", hex: "#181818"}]
-      },
-      {
         id: 5, name: "Vivo V30 Pro", brand: "Vivo", price: "₹41,999", category: "camera",
-        processor: "Dimensity 8200", camera: "50MP Zeiss Triple Cam + 50MP Selfie", battery: "5000mAh (80W)", display: "6.78' 120Hz 3D Curved", storage: "12GB / 512GB", os: "Android 14 (Funtouch OS 14)", weight: "188g",
+        processor: "MediaTek Dimensity 8200 (4nm)", ramRom: "12GB LPDDR5 / 512GB UFS 3.1", os: "Android 14 (Funtouch OS 14)",
+        display: "6.78' AMOLED, 120Hz 3D Curved", resolution: "1260 x 2800 pixels", peakBrightness: "2800 nits",
+        cameraMain: "50MP OIS (Zeiss)", cameraUltrawide: "50MP (119°)", cameraTelephoto: "50MP (2x Optical Portrait)", cameraSelfie: "50MP AF",
+        battery: "5000mAh", wiredCharging: "80W", wirelessCharging: crossIcon,
+        buildFront: "Schott Alpha", buildBack: "Glass", buildFrame: "Plastic",
+        weight: "188g", ipRating: "IP54",
+        fingerprint: checkIcon + " (Optical In-display)", faceUnlock: checkIcon + " (2D)", nfc: checkIcon, audioJack: crossIcon, sdCard: crossIcon,
+        usbType: "Type-C 2.0",
         colors: [{name: "Andaman Blue", hex: "#a4d3df"}, {name: "Classic Black", hex: "#1d1d1f"}]
       },
       {
-        id: 6, name: "Oppo Reno 11 Pro", brand: "Oppo", price: "₹39,999", category: "camera",
-        processor: "Dimensity 8200", camera: "50MP OIS + 32MP Tele + 8MP", battery: "4600mAh (80W)", display: "6.7' 120Hz AMOLED", storage: "12GB / 256GB", os: "Android 14 (ColorOS 14)", weight: "181g",
-        colors: [{name: "Pearl White", hex: "#f4f1ed"}, {name: "Rock Grey", hex: "#43464a"}]
-      },
-      {
-        id: 7, name: "Redmi Note 13 Pro+", brand: "Xiaomi", price: "₹31,999", category: "camera",
-        processor: "Dimensity 7200-Ultra", camera: "200MP OIS + 8MP + 2MP", battery: "5000mAh (120W)", display: "6.67' 120Hz 1.5K Curved", storage: "8GB / 256GB", os: "Android 13 (MIUI 14)", weight: "204g",
-        colors: [{name: "Fusion Purple", hex: "#b4a1c8"}, {name: "Fusion Black", hex: "#1c1c1e"}, {name: "Fusion White", hex: "#f8f9fa"}]
-      },
-      {
         id: 8, name: "Poco X6 Pro", brand: "Poco", price: "₹26,999", category: "gaming",
-        processor: "Dimensity 8300 Ultra (AnTuTu 1.4M+)", camera: "64MP OIS + 8MP + 2MP", battery: "5000mAh (67W)", display: "6.67' 120Hz AMOLED", storage: "8GB / 256GB", os: "Android 14 (HyperOS)", weight: "186g",
+        processor: "MediaTek Dimensity 8300 Ultra (4nm)", ramRom: "8GB LPDDR5X / 256GB UFS 4.0", os: "Android 14 (HyperOS)",
+        display: "6.67' AMOLED, 120Hz", resolution: "1220 x 2712 pixels", peakBrightness: "1800 nits",
+        cameraMain: "64MP OIS", cameraUltrawide: "8MP (120°)", cameraTelephoto: crossIcon + " (2MP Macro instead)", cameraSelfie: "16MP",
+        battery: "5000mAh", wiredCharging: "67W", wirelessCharging: crossIcon,
+        buildFront: "Gorilla Glass 5", buildBack: "Plastic / Eco Leather", buildFrame: "Plastic",
+        weight: "186g / 190g", ipRating: "IP54",
+        fingerprint: checkIcon + " (Optical In-display)", faceUnlock: checkIcon + " (2D)", nfc: checkIcon, audioJack: crossIcon, sdCard: crossIcon,
+        usbType: "Type-C 2.0",
         colors: [{name: "POCO Yellow", hex: "#ffca08"}, {name: "Spectre Black", hex: "#222222"}, {name: "Racing Grey", hex: "#7a7d82"}]
       },
       {
         id: 9, name: "Moto G34 5G", brand: "Motorola", price: "₹10,999", category: "budget",
-        processor: "Snapdragon 695", camera: "50MP Main + 2MP Macro", battery: "5000mAh (18W)", display: "6.5' 120Hz IPS LCD", storage: "8GB / 128GB", os: "Android 14", weight: "179g",
-        colors: [{name: "Ice Blue", hex: "#b2d1d9"}, {name: "Charcoal Black", hex: "#2f3136"}, {name: "Ocean Green (Leather)", hex: "#1c5148"}]
-      },
-      {
-        id: 10, name: "Galaxy M14 5G", brand: "Samsung", price: "₹11,490", category: "budget",
-        processor: "Exynos 1330", camera: "50MP + 2MP + 2MP", battery: "6000mAh (25W)", display: "6.6' 90Hz PLS LCD", storage: "6GB / 128GB", os: "Android 13 (One UI Core)", weight: "206g",
-        colors: [{name: "Smoky Teal", hex: "#395b64"}, {name: "Icy Silver", hex: "#dcdfe4"}, {name: "Berry Blue", hex: "#26305a"}]
+        processor: "Snapdragon 695 5G (6nm)", ramRom: "8GB LPDDR4X / 128GB UFS 2.2", os: "Android 14",
+        display: "6.5' IPS LCD, 120Hz", resolution: "720 x 1600 pixels (HD+)", peakBrightness: "500 nits",
+        cameraMain: "50MP PDAF", cameraUltrawide: crossIcon, cameraTelephoto: crossIcon + " (2MP Macro instead)", cameraSelfie: "16MP",
+        battery: "5000mAh", wiredCharging: "18W", wirelessCharging: crossIcon,
+        buildFront: "Glass", buildBack: "Plastic / Vegan Leather", buildFrame: "Plastic",
+        weight: "179g", ipRating: "Water-repellent design",
+        fingerprint: checkIcon + " (Side-mounted)", faceUnlock: checkIcon + " (2D)", nfc: crossIcon, audioJack: checkIcon, sdCard: checkIcon + " (Hybrid slot)",
+        usbType: "Type-C 2.0",
+        colors: [{name: "Ice Blue", hex: "#b2d1d9"}, {name: "Charcoal Black", hex: "#2f3136"}, {name: "Ocean Green", hex: "#1c5148"}]
       }
     ];
 
@@ -287,10 +317,10 @@
           </div>
 
           <div class="specs-list">
-            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg> <span><strong>RAM/ROM:</strong> ${phone.storage}</span></div>
-            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg> <span><strong>CPU:</strong> ${phone.processor}</span></div>
-            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> <span><strong>Cam:</strong> ${phone.camera}</span></div>
-            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> <span><strong>Bat:</strong> ${phone.battery}</span></div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/></svg> <span><strong>RAM/ROM:</strong> ${phone.ramRom.split(' / ')[0]} / ${phone.ramRom.split(' / ')[1].split(' ')[0]}</span></div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg> <span><strong>CPU:</strong> ${phone.processor.split(' (')[0]}</span></div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg> <span><strong>Cam:</strong> ${phone.cameraMain}</span></div>
+            <div class="spec-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> <span><strong>Bat:</strong> ${phone.battery} (${phone.wiredCharging})</span></div>
           </div>
 
           <label class="compare-label">
@@ -339,27 +369,51 @@
       
       let html = `
         <tr>
-          <th style="width: 20%; text-align: left;">Features</th>
+          <th style="width: 20%; text-align: left;">Specifications</th>
           ${phonesToCompare.map(p => `<th><div style="font-size:20px;">${p.name}</div><div style="color:var(--success); font-size:16px; margin-top:4px;">${p.price}</div></th>`).join('')}
         </tr>
-        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Core Performance</td></tr>
-        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Processor</td>${phonesToCompare.map(p => `<td>${p.processor}</td>`).join('')}</tr>
-        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">RAM / Storage</td>${phonesToCompare.map(p => `<td>${p.storage}</td>`).join('')}</tr>
+        
+        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Performance & Memory</td></tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Processor (SoC)</td>${phonesToCompare.map(p => `<td>${p.processor}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">RAM & Storage Type</td>${phonesToCompare.map(p => `<td>${p.ramRom}</td>`).join('')}</tr>
         <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Operating System</td>${phonesToCompare.map(p => `<td>${p.os}</td>`).join('')}</tr>
         
-        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Display & Camera</td></tr>
-        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Display</td>${phonesToCompare.map(p => `<td>${p.display}</td>`).join('')}</tr>
-        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Camera Setup</td>${phonesToCompare.map(p => `<td>${p.camera}</td>`).join('')}</tr>
+        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Display</td></tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Screen Type</td>${phonesToCompare.map(p => `<td>${p.display}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Resolution</td>${phonesToCompare.map(p => `<td>${p.resolution}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Peak Brightness</td>${phonesToCompare.map(p => `<td>${p.peakBrightness}</td>`).join('')}</tr>
         
-        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Battery & Build</td></tr>
-        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Battery (Charging)</td>${phonesToCompare.map(p => `<td>${p.battery}</td>`).join('')}</tr>
+        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Cameras</td></tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Main Camera</td>${phonesToCompare.map(p => `<td>${p.cameraMain}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Ultrawide Camera</td>${phonesToCompare.map(p => `<td>${p.cameraUltrawide}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Telephoto / Macro</td>${phonesToCompare.map(p => `<td>${p.cameraTelephoto}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Selfie Camera</td>${phonesToCompare.map(p => `<td>${p.cameraSelfie}</td>`).join('')}</tr>
+        
+        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Battery & Charging</td></tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Battery Capacity</td>${phonesToCompare.map(p => `<td>${p.battery}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Wired Charging</td>${phonesToCompare.map(p => `<td>${p.wiredCharging}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Wireless Charging</td>${phonesToCompare.map(p => `<td>${p.wirelessCharging}</td>`).join('')}</tr>
+        
+        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Design & Build</td></tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Front Glass</td>${phonesToCompare.map(p => `<td>${p.buildFront}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Back Material</td>${phonesToCompare.map(p => `<td>${p.buildBack}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Frame Material</td>${phonesToCompare.map(p => `<td>${p.buildFrame}</td>`).join('')}</tr>
         <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Weight</td>${phonesToCompare.map(p => `<td>${p.weight}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">IP Rating (Water/Dust)</td>${phonesToCompare.map(p => `<td>${p.ipRating}</td>`).join('')}</tr>
         <tr>
           <td style="text-align: left; font-weight:600; color:var(--text-main);">Available Colors</td>
           ${phonesToCompare.map(p => `<td><div style="display:flex; gap:6px; justify-content:center; flex-wrap:wrap;">
             ${p.colors.map(c => `<div class="color-dot" style="background-color:${c.hex};" title="${c.name}"></div>`).join('')}
           </div><div style="font-size:12px; margin-top:6px; color:var(--text-soft);">${p.colors.map(c=>c.name).join(', ')}</div></td>`).join('')}
         </tr>
+
+        <tr><td class="spec-row-title" colspan="${phonesToCompare.length + 1}">Connectivity & Features</td></tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Fingerprint Sensor</td>${phonesToCompare.map(p => `<td>${p.fingerprint}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">Face Unlock</td>${phonesToCompare.map(p => `<td>${p.faceUnlock}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">NFC</td>${phonesToCompare.map(p => `<td>${p.nfc}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">3.5mm Audio Jack</td>${phonesToCompare.map(p => `<td>${p.audioJack}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">MicroSD Card Slot</td>${phonesToCompare.map(p => `<td>${p.sdCard}</td>`).join('')}</tr>
+        <tr><td style="text-align: left; font-weight:600; color:var(--text-main);">USB Port Version</td>${phonesToCompare.map(p => `<td>${p.usbType}</td>`).join('')}</tr>
       `;
       
       table.innerHTML = html;
