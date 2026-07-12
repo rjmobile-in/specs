@@ -224,6 +224,18 @@
     .deep-dive-label { width: 35%; padding: 14px 20px; font-weight: 600; color: var(--text-main); border-right: 1px solid var(--card-border); font-size: 14px; background: rgba(0,0,0,0.1); }
     .deep-dive-value { width: 65%; padding: 14px 20px; color: var(--text-soft); font-size: 14px; line-height: 1.5; }
 
+    /* ========================================= */
+    /* NEW: SPEC CATEGORY COLOR ENHANCEMENTS     */
+    /* ========================================= */
+    .spec-cat-display { color: #3b82f6 !important; background: rgba(59, 130, 246, 0.1) !important; border-left: 4px solid #3b82f6 !important; }
+    .spec-cat-perf { color: #f97316 !important; background: rgba(249, 115, 22, 0.1) !important; border-left: 4px solid #f97316 !important; }
+    .spec-cat-cam { color: #ec4899 !important; background: rgba(236, 72, 153, 0.1) !important; border-left: 4px solid #ec4899 !important; }
+    .spec-cat-selfie { color: #d946ef !important; background: rgba(217, 70, 239, 0.1) !important; border-left: 4px solid #d946ef !important; }
+    .spec-cat-bat { color: #10b981 !important; background: rgba(16, 185, 129, 0.1) !important; border-left: 4px solid #10b981 !important; }
+    .spec-cat-build { color: #14b8a6 !important; background: rgba(20, 184, 166, 0.1) !important; border-left: 4px solid #14b8a6 !important; }
+    .spec-cat-misc { color: #8b5cf6 !important; background: rgba(139, 92, 246, 0.1) !important; border-left: 4px solid #8b5cf6 !important; }
+    .spec-cat-hw { color: #ef4444 !important; background: rgba(239, 68, 68, 0.1) !important; border-left: 4px solid #ef4444 !important; }
+
     @media (max-width: 768px) {
       .brand-group { flex-direction: row; }
       .bento-grid { grid-template-columns: 1fr; }
@@ -703,7 +715,7 @@
       html += `<tr><td class="spec-label">Available Tiers</td>${phones.map(p => `<td><div style="display:flex; flex-direction:column; gap:4px; font-size:12px; font-weight:600;">${p.variants.map(v => `<span>• ${v.ramRom} - ${v.price}</span>`).join('')}</div></td>`).join('')}</tr>`;
 
       // DISPLAY
-      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">📱 Display</td></tr>`;
+      html += `<tr><td class="spec-row-title spec-cat-display" colspan="${phones.length + 1}">📱 Display</td></tr>`;
       html += `<tr><td class="spec-label">Screen Size</td>${phones.map(p => `<td>${valOrDash(p.display.size)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Panel Type</td>${phones.map(p => `<td>${valOrDash(p.display.panel)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Resolution</td>${phones.map(p => `<td>${valOrDash(p.display.resolution)}</td>`).join('')}</tr>`;
@@ -714,7 +726,7 @@
       html += `<tr><td class="spec-label">Features</td>${phones.map(p => `<td>${valOrDash(p.display.features)}</td>`).join('')}</tr>`;
       
       // PERFORMANCE
-      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">⚡ Performance</td></tr>`;
+      html += `<tr><td class="spec-row-title spec-cat-perf" colspan="${phones.length + 1}">⚡ Performance</td></tr>`;
       html += `<tr><td class="spec-label">Chipset</td>${phones.map(p => `<td>${valOrDash(p.perf.chip)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">CPU Cores</td>${phones.map(p => `<td>${valOrDash(p.perf.cpu)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">GPU</td>${phones.map(p => `<td>${valOrDash(p.perf.gpu)}</td>`).join('')}</tr>`;
@@ -723,7 +735,7 @@
       html += `<tr><td class="spec-label">Custom UI</td>${phones.map(p => `<td>${valOrDash(p.perf.ui)}</td>`).join('')}</tr>`;
 
       // REAR CAMERAS
-      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">📸 Rear Cameras</td></tr>`;
+      html += `<tr><td class="spec-row-title spec-cat-cam" colspan="${phones.length + 1}">📸 Rear Cameras</td></tr>`;
       html += `<tr><td class="spec-label">Main Lens</td>${phones.map(p => `<td>${valOrDash(p.camRear.main)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Ultrawide Lens</td>${phones.map(p => `<td>${valOrDash(p.camRear.ultrawide)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Telephoto / Periscope</td>${phones.map(p => `<td>${valOrDash(p.camRear.telephoto)}</td>`).join('')}</tr>`;
@@ -731,20 +743,20 @@
       html += `<tr><td class="spec-label">Video Recording</td>${phones.map(p => `<td>${valOrDash(p.camRear.video)}</td>`).join('')}</tr>`;
 
       // SELFIE CAMERA
-      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">🤳 Front Camera</td></tr>`;
+      html += `<tr><td class="spec-row-title spec-cat-selfie" colspan="${phones.length + 1}">🤳 Front Camera</td></tr>`;
       html += `<tr><td class="spec-label">Main Selfie Lens</td>${phones.map(p => `<td>${valOrDash(p.camSelfie.main)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Extra Selfie Sensors</td>${phones.map(p => `<td>${valOrDash(p.camSelfie.extra)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Selfie Video Recording</td>${phones.map(p => `<td>${valOrDash(p.camSelfie.video)}</td>`).join('')}</tr>`;
 
       // BATTERY
-      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">🔋 Battery & Charging</td></tr>`;
+      html += `<tr><td class="spec-row-title spec-cat-bat" colspan="${phones.length + 1}">🔋 Battery & Charging</td></tr>`;
       html += `<tr><td class="spec-label">Battery Capacity</td>${phones.map(p => `<td>${valOrDash(p.bat.cap)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Wired Charging</td>${phones.map(p => `<td>${valOrDash(p.bat.wired)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Wireless Charging</td>${phones.map(p => `<td>${valOrDash(p.bat.wireless)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Reverse Charging</td>${phones.map(p => `<td>${valOrDash(p.bat.reverse)}</td>`).join('')}</tr>`;
 
       // BUILD & BODY
-      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">🧱 Design & Build</td></tr>`;
+      html += `<tr><td class="spec-row-title spec-cat-build" colspan="${phones.length + 1}">🧱 Design & Build</td></tr>`;
       html += `<tr><td class="spec-label">Weight</td>${phones.map(p => `<td>${valOrDash(p.body.weight)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Dimensions</td>${phones.map(p => `<td>${valOrDash(p.body.dim)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Front Material</td>${phones.map(p => `<td>${valOrDash(p.body.buildFront)}</td>`).join('')}</tr>`;
@@ -753,7 +765,7 @@
       html += `<tr><td class="spec-label">IP Rating (Water/Dust)</td>${phones.map(p => `<td>${valOrDash(p.body.ip)}</td>`).join('')}</tr>`;
 
       // MISC
-      html += `<tr><td class="spec-row-title" colspan="${phones.length + 1}">⚙️ Miscellaneous</td></tr>`;
+      html += `<tr><td class="spec-row-title spec-cat-misc" colspan="${phones.length + 1}">⚙️ Miscellaneous</td></tr>`;
       html += `<tr><td class="spec-label">Audio & Speakers</td>${phones.map(p => `<td>${valOrDash(p.misc.audio)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">Biometrics & Security</td>${phones.map(p => `<td>${valOrDash(p.misc.security)}</td>`).join('')}</tr>`;
       html += `<tr><td class="spec-label">NFC</td>${phones.map(p => `<td>${valOrDash(p.misc.nfc)}</td>`).join('')}</tr>`;
@@ -817,12 +829,12 @@
             <h3 style="margin-bottom:16px; font-size:20px; font-weight:900; padding-left:4px;">Deep Dive Specifications</h3>
             
             <div class="deep-dive-section">
-              <div class="deep-dive-header">📦 Available Hardware Variants Tiers</div>
+              <div class="deep-dive-header spec-cat-hw">📦 Available Hardware Variants Tiers</div>
               ${phone.variants.map((v, idx) => createSpecRow(`Variant Allocation #${idx+1}`, `<strong>${v.ramRom}</strong> — structural pricing tier set at ${v.price}`)).join('')}
             </div>
 
             <div class="deep-dive-section">
-              <div class="deep-dive-header">📱 Display Engine</div>
+              <div class="deep-dive-header spec-cat-display">📱 Display Engine</div>
               ${createSpecRow('Screen Size', phone.display.size)}
               ${createSpecRow('Panel Type', phone.display.panel)}
               ${createSpecRow('Resolution', phone.display.resolution)}
@@ -834,7 +846,7 @@
             </div>
 
             <div class="deep-dive-section">
-              <div class="deep-dive-header">⚡ Core Performance</div>
+              <div class="deep-dive-header spec-cat-perf">⚡ Core Performance</div>
               ${createSpecRow('Chipset (SoC)', phone.perf.chip)}
               ${createSpecRow('CPU Cores', phone.perf.cpu)}
               ${createSpecRow('Graphics (GPU)', phone.perf.gpu)}
@@ -843,7 +855,7 @@
             </div>
 
             <div class="deep-dive-section">
-              <div class="deep-dive-header">📸 Rear Camera System</div>
+              <div class="deep-dive-header spec-cat-cam">📸 Rear Camera System</div>
               ${createSpecRow('Primary Lens', phone.camRear.main)}
               ${createSpecRow('Ultrawide Lens', phone.camRear.ultrawide)}
               ${createSpecRow('Telephoto / Periscope', phone.camRear.telephoto)}
@@ -852,14 +864,14 @@
             </div>
 
             <div class="deep-dive-section">
-              <div class="deep-dive-header">🤳 Front Selfie Camera</div>
+              <div class="deep-dive-header spec-cat-selfie">🤳 Front Selfie Camera</div>
               ${createSpecRow('Primary Selfie Lens', phone.camSelfie.main)}
               ${createSpecRow('Extra Selfie Sensors', phone.camSelfie.extra)}
               ${createSpecRow('Video Recording', phone.camSelfie.video)}
             </div>
 
             <div class="deep-dive-section">
-              <div class="deep-dive-header">🔋 Battery & Charging</div>
+              <div class="deep-dive-header spec-cat-bat">🔋 Battery & Charging</div>
               ${createSpecRow('Total Capacity', phone.bat.cap)}
               ${createSpecRow('Wired Fast Charging', phone.bat.wired)}
               ${createSpecRow('Wireless Charging', phone.bat.wireless)}
@@ -867,7 +879,7 @@
             </div>
 
             <div class="deep-dive-section">
-              <div class="deep-dive-header">🧱 Design & Durability</div>
+              <div class="deep-dive-header spec-cat-build">🧱 Design & Durability</div>
               ${createSpecRow('Total Weight', phone.body.weight)}
               ${createSpecRow('Physical Dimensions', phone.body.dim)}
               ${createSpecRow('Front Material', phone.body.buildFront)}
@@ -877,7 +889,7 @@
             </div>
 
             <div class="deep-dive-section">
-              <div class="deep-dive-header">⚙️ Miscellaneous</div>
+              <div class="deep-dive-header spec-cat-misc">⚙️ Miscellaneous</div>
               ${createSpecRow('Audio Output', phone.misc.audio)}
               ${createSpecRow('Biometrics & Security', phone.misc.security)}
               ${createSpecRow('NFC Support', phone.misc.nfc)}
@@ -900,3 +912,4 @@
   </script>
 </body>
 </html>
+ 
