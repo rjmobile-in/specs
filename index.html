@@ -363,40 +363,6 @@
     // ==========================================
     const mobiles = [
       { 
-        slug: "iphone-16-pro", name: "iPhone 16 Pro Max", brand: "Apple", categories: ["Premium", "Camera", "Gaming"], antutu: 1650000, 
-        knownFor: "Industry-leading video recording & seamless ecosystem synergy",
-        scores: { bat: 92, cam: 98, game: 95, disp: 95 },
-        variants: [
-          { ramRom: "8GB / 256GB", price: "₹1,44,900", numPrice: 144900 },
-          { ramRom: "8GB / 512GB", price: "₹1,64,900", numPrice: 164900 },
-          { ramRom: "8GB / 1TB", price: "₹1,84,900", numPrice: 184900 }
-        ],
-        display: { panel: "LTPO Super Retina XDR OLED", size: "6.9 inches", resolution: "1320 x 2868 pixels", refresh: "120Hz (ProMotion)", peakBright: "2000 nits", hbm: "1000 nits", protection: "Ceramic Shield Gen 3", features: "HDR10, Dolby Vision, Always-On" },
-        perf: { chip: "Apple A18 Pro (3 nm)", cpu: "Hexa-core", gpu: "Apple GPU (6-core)", os: "iOS 18", ui: "iOS" },
-        camRear: { main: "48 MP, f/1.8, 24mm (wide), 1.22µm, dual pixel PDAF, sensor-shift OIS", ultrawide: "48 MP, f/2.2, 13mm, 120˚, PDAF", telephoto: "12 MP, f/2.8, 120mm (periscope telephoto), PDAF, 3D sensor‑shift OIS, 5x optical zoom", extra: "TOF 3D LiDAR scanner", video: "4K@24/25/30/60/120fps, Dolby Vision HDR" },
-        camSelfie: { main: "12 MP, f/1.9, 23mm (wide), PDAF, OIS", extra: "SL 3D (depth/biometrics)", video: "4K@24/25/30/60fps" },
-        bat: { cap: "4685 mAh", wired: "30W Fast Charging (50% in 30 min)", wireless: "25W MagSafe, 15W Qi2", reverse: "4.5W Reverse Wired" },
-        body: { dim: "163 x 77.6 x 8.25 mm", weight: "227g", buildFront: "Ceramic Shield Glass", buildBack: "Textured Matte Glass", buildFrame: "Grade 5 Titanium", ip: "IP68 Dust/Water Resistant", colors: "Desert Titanium, Natural Titanium, White Titanium, Black Titanium" },
-        misc: { audio: "Stereo Speakers, No 3.5mm Jack", security: "Face ID (3D Facial Recognition)", nfc: "Yes" }
-      },
-      { 
-        slug: "galaxy-s24-ultra", name: "Galaxy S24 Ultra", brand: "Samsung", categories: ["Premium", "Camera", "Gaming"], antutu: 1950000, 
-        knownFor: "Ultimate productivity with S-Pen & incredibly versatile zoom cameras",
-        scores: { bat: 90, cam: 96, game: 94, disp: 98 },
-        variants: [
-          { ramRom: "12GB / 256GB", price: "₹1,29,999", numPrice: 129999 },
-          { ramRom: "12GB / 512GB", price: "₹1,39,999", numPrice: 139999 },
-          { ramRom: "12GB / 1TB", price: "₹1,59,999", numPrice: 159999 }
-        ],
-        display: { panel: "Dynamic LTPO AMOLED 2X", size: "6.8 inches", resolution: "1440 x 3120 pixels", refresh: "120Hz", peakBright: "2600 nits", hbm: "1500 nits", protection: "Corning Gorilla Armor", features: "HDR10+, Anti-reflective coating" },
-        perf: { chip: "Snapdragon 8 Gen 3 (4 nm)", cpu: "Octa-core (1x3.39GHz Cortex-X4)", gpu: "Adreno 750", os: "Android 14", ui: "One UI 6.1" },
-        camRear: { main: "200 MP, f/1.7, 24mm (wide), multi-directional PDAF, Laser AF, OIS", ultrawide: "12 MP, f/2.2, 13mm, 120˚, dual pixel PDAF", telephoto: "50 MP, f/3.4, 111mm (periscope telephoto), PDAF, OIS, 5x optical zoom", extra: "10 MP, f/2.4, 67mm (telephoto), dual pixel PDAF, OIS, 3x optical zoom", video: "8K@24/30fps, 4K@30/60/120fps" },
-        camSelfie: { main: "12 MP, f/2.2, 26mm (wide), dual pixel PDAF", extra: "-", video: "4K@30/60fps" },
-        bat: { cap: "5000 mAh", wired: "45W Wired (65% in 30 min)", wireless: "15W Wireless (Qi/PMA)", reverse: "4.5W Reverse Wireless" },
-        body: { dim: "162.3 x 79 x 8.6 mm", weight: "232g", buildFront: "Gorilla Armor Glass", buildBack: "Gorilla Armor Glass", buildFrame: "Titanium Frame", ip: "IP68 Dust/Water Resistant", colors: "Titanium Gray, Titanium Black, Titanium Violet, Titanium Yellow" },
-        misc: { audio: "Stereo Speakers (Tuned by AKG), No 3.5mm Jack", security: "Ultrasonic Under-Display Fingerprint", nfc: "Yes" }
-      },
-      { 
         slug: "oppo-reno-16", name: "Oppo Reno 16", brand: "Oppo", categories: ["Camera"], antutu: 1350000, 
         knownFor: "Studio-quality portrait photography & ultra-sleek design",
         scores: { bat: 85, cam: 92, game: 82, disp: 88 },
@@ -427,45 +393,13 @@
         bat: { cap: "5000 mAh", wired: "67W SuperVOOC (100% in 42 min)", wireless: "-", reverse: "-" },
         body: { dim: "161.1 x 74.7 x 7.5 mm", weight: "177g", buildFront: "Glass", buildBack: "Plastic", buildFrame: "Plastic", ip: "IP54 Dust & Splash Resistant", colors: "Silvery Grey, Cosmic Black" },
         misc: { audio: "Stereo Speakers, No 3.5mm Jack", security: "Optical Under-Display Fingerprint", nfc: "Yes (Market dependent)" }
-      },
-      { 
-        slug: "pixel-9-pro-xl", name: "Pixel 9 Pro XL", brand: "Google", categories: ["Premium", "Camera"], antutu: 1250000, 
-        knownFor: "Unrivaled computational AI photography & clean Android experience",
-        scores: { bat: 85, cam: 99, game: 75, disp: 94 },
-        variants: [
-          { ramRom: "16GB / 256GB", price: "₹1,24,999", numPrice: 124999 },
-          { ramRom: "16GB / 512GB", price: "₹1,39,999", numPrice: 139999 }
-        ],
-        display: { panel: "LTPO OLED", size: "6.8 inches", resolution: "1344 x 2992 pixels", refresh: "120Hz", peakBright: "3000 nits", hbm: "1800 nits", protection: "Gorilla Glass Victus 2", features: "HDR10+, Always-on display" },
-        perf: { chip: "Google Tensor G4 (4 nm)", cpu: "Octa-core", gpu: "Mali-G715", os: "Android 14", ui: "Pixel UI (7 years upgrades)" },
-        camRear: { main: "50 MP, f/1.68, 25mm (wide), dual pixel PDAF, multi-zone Laser AF, OIS", ultrawide: "48 MP, f/1.7, 123˚, dual pixel PDAF", telephoto: "48 MP, f/2.8, 113mm (periscope telephoto), dual pixel PDAF, OIS, 5x optical zoom", extra: "Multi-zone Laser AF sensor", video: "8K@30fps (Video Boost), 4K@24/30/60fps" },
-        camSelfie: { main: "42 MP, f/2.2, 17mm (ultrawide), dual pixel PDAF", extra: "-", video: "4K@30/60fps" },
-        bat: { cap: "5060 mAh", wired: "37W Wired (70% in 30 min)", wireless: "23W Wireless", reverse: "Reverse Wireless" },
-        body: { dim: "162.8 x 76.6 x 8.5 mm", weight: "221g", buildFront: "Gorilla Glass Victus 2", buildBack: "Matte Gorilla Glass Victus 2", buildFrame: "Polished Aluminum", ip: "IP68 Dust/Water Resistant", colors: "Obsidian, Porcelain, Hazel, Rose Quartz" },
-        misc: { audio: "Stereo Speakers, No 3.5mm Jack", security: "Ultrasonic Under-Display Fingerprint", nfc: "Yes" }
-      },
-      { 
-        slug: "xiaomi-14-ultra", name: "Xiaomi 14 Ultra", brand: "Xiaomi", categories: ["Premium", "Camera"], antutu: 2050000, 
-        knownFor: "Authentic Leica photography with variable aperture mastery",
-        scores: { bat: 90, cam: 98, game: 92, disp: 93 },
-        variants: [
-          { ramRom: "16GB / 512GB", price: "₹99,999", numPrice: 99999 },
-          { ramRom: "16GB / 1TB", price: "₹1,14,999", numPrice: 114999 }
-        ],
-        display: { panel: "LTPO AMOLED, 68B colors", size: "6.73 inches", resolution: "1440 x 3200 pixels", refresh: "120Hz", peakBright: "3000 nits", hbm: "1000 nits", protection: "Xiaomi Shield Glass", features: "Dolby Vision, HDR10+" },
-        perf: { chip: "Snapdragon 8 Gen 3 (4 nm)", cpu: "Octa-core", gpu: "Adreno 750", os: "Android 14", ui: "HyperOS" },
-        camRear: { main: "50 MP, f/1.6-f/4.0, 23mm (wide), 1.0\"-type, multi-directional PDAF, Laser AF, OIS", ultrawide: "50 MP, f/1.8, 12mm, 122˚, Dual-Pixel PDAF", telephoto: "50 MP, f/2.5, 120mm (periscope telephoto), Dual-Pixel PDAF, OIS, 5x optical zoom", extra: "50 MP, f/1.8, 75mm (telephoto), Dual-Pixel PDAF, OIS, 3.2x optical zoom", video: "8K@24/30fps, 4K@24/30/60/120fps, Dolby Vision HDR" },
-        camSelfie: { main: "32 MP, f/2.0, 22mm (wide)", extra: "-", video: "4K@30/60fps" },
-        bat: { cap: "5000 mAh", wired: "90W Wired (100% in 33 min)", wireless: "80W Wireless (100% in 46 min)", reverse: "10W Reverse Wireless" },
-        body: { dim: "161.4 x 75.3 x 9.2 mm", weight: "224g", buildFront: "Xiaomi Shield Glass", buildBack: "Eco Leather / Glass", buildFrame: "Aluminum (Titanium alloy optional)", ip: "IP68 Dust/Water Resistant", colors: "Black, White" },
-        misc: { audio: "Stereo Speakers (Hi-Res), No 3.5mm Jack", security: "Optical Under-Display Fingerprint", nfc: "Yes" }
       }
     ];
 
     // State Objects
     let selectedForCompare = [];
     let activeCategories = [];
-    let selectedVariants = {}; // Tracks active variant index per phone slug (e.g. { "iphone-16-pro": 0 })
+    let selectedVariants = {}; // Tracks active variant index per phone slug (e.g. { "oppo-reno-16": 0 })
     let favourites = JSON.parse(localStorage.getItem('rj_favourites')) || [];
 
     const searchInput = document.getElementById('search-input');
